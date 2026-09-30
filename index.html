@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>許秀屏｜個人履歷</title>
+  <meta name="description" content="許秀屏個人履歷網站｜總務行政、業務助理、採購與多年職場經驗。" />
+  <style>
+    :root{
+      --bg:#f5f2ed;
+      --paper:#fffdf9;
+      --text:#2f2b28;
+      --muted:#716a63;
+      --line:#e5ded5;
+      --accent:#8d6e63;
+      --accent-dark:#624c45;
+      --chip:#eee7df;
+      --shadow:0 18px 60px rgba(62,46,38,.08);
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+      background:
+        radial-gradient(circle at 10% 0%, rgba(141,110,99,.08), transparent 30%),
+        var(--bg);
+      color:var(--text);
+      line-height:1.8;
+    }
+    a{color:inherit;text-decoration:none}
+    .wrap{width:min(1100px,92%);margin:auto}
+    nav{
+      position:sticky;top:0;z-index:20;
+      background:rgba(245,242,237,.88);
+      backdrop-filter:blur(14px);
+      border-bottom:1px solid rgba(229,222,213,.8);
+    }
+    .nav-inner{
+      display:flex;align-items:center;justify-content:space-between;
+      min-height:70px;gap:24px;
+    }
+    .brand{font-weight:800;letter-spacing:.08em}
+    .nav-links{display:flex;gap:22px;color:var(--muted);font-size:14px}
+    .nav-links a:hover{color:var(--accent-dark)}
+    .hero{padding:86px 0 54px}
+    .hero-card{
+      display:grid;
+      grid-template-columns:1.1fr .9fr;
+      gap:48px;
+      background:var(--paper);
+      border:1px solid var(--line);
+      border-radius:30px;
+      box-shadow:var(--shadow);
+      padding:56px;
+      overflow:hidden;
+      position:relative;
+    }
+    .hero-card:after{
+      content:"";
+      position:absolute;right:-120px;top:-120px;
+      width:360px;height:360px;border-radius:50%;
+      border:44px solid rgba(141,110,99,.08);
+    }
+    .eyebrow{
+      font-size:13px;letter-spacing:.2em;text-transform:uppercase;
+      color:var(--accent);font-weight:800;margin-bottom:18px;
+    }
+    h1{font-size:clamp(42px,6vw,72px);line-height:1.05;margin:0 0 14px}
+    .role{
+      font-size:20px;color:var(--accent-dark);font-weight:700;margin-bottom:24px
+    }
+    .lead{font-size:18px;color:var(--muted);max-width:680px}
+    .hero-stats{
+      display:grid;grid-template-columns:repeat(2,1fr);gap:14px;
+      align-content:center;position:relative;z-index:1;
+    }
+    .stat{
+      padding:24px;border-radius:20px;background:var(--chip);
+      border:1px solid #e7ddd4;
+    }
+    .stat strong{display:block;font-size:32px;line-height:1.2;color:var(--accent-dark)}
+    .stat span{font-size:14px;color:var(--muted)}
+    section{padding:46px 0}
+    .section-head{display:flex;align-items:end;justify-content:space-between;gap:20px;margin-bottom:24px}
+    h2{font-size:30px;margin:0}
+    .section-note{font-size:14px;color:var(--muted)}
+    .panel{
+      background:var(--paper);border:1px solid var(--line);
+      border-radius:24px;padding:34px;box-shadow:0 10px 30px rgba(62,46,38,.04);
+    }
+    .about p{margin:0;color:#4b4540;font-size:17px}
+    .skills{display:flex;flex-wrap:wrap;gap:12px}
+    .skill{
+      padding:10px 16px;border-radius:999px;background:var(--chip);
+      color:var(--accent-dark);font-size:14px;font-weight:700;
+    }
+    .timeline{display:grid;gap:18px}
+    .job{
+      display:grid;grid-template-columns:180px 1fr;gap:26px;
+      padding:26px 0;border-bottom:1px solid var(--line);
+    }
+    .job:last-child{border-bottom:none;padding-bottom:0}
+    .job:first-child{padding-top:0}
+    .years{font-weight:800;color:var(--accent);font-size:16px}
+    .job h3{margin:0 0 3px;font-size:22px}
+    .job .title{color:var(--accent-dark);font-weight:700;margin-bottom:12px}
+    .job ul{margin:0;padding-left:20px;color:#55504b}
+    .quote{
+      padding:30px;border-left:5px solid var(--accent);
+      background:linear-gradient(135deg,#f2ebe4,#faf7f2);
+      border-radius:0 20px 20px 0;
+      font-size:21px;font-weight:700;color:var(--accent-dark);
+    }
+    .footer{
+      margin-top:40px;padding:34px 0 50px;
+      color:var(--muted);font-size:14px;text-align:center;
+    }
+    @media(max-width:800px){
+      .nav-links{display:none}
+      .hero{padding-top:44px}
+      .hero-card{grid-template-columns:1fr;padding:32px;gap:30px}
+      .job{grid-template-columns:1fr;gap:8px}
+      .hero-stats{grid-template-columns:1fr 1fr}
+    }
+    @media(max-width:480px){
+      .hero-stats{grid-template-columns:1fr}
+      .panel{padding:24px}
+      h2{font-size:26px}
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="wrap nav-inner">
+      <div class="brand">HSIU-PING HSU</div>
+      <div class="nav-links">
+        <a href="#about">關於我</a>
+        <a href="#strengths">專長</a>
+        <a href="#experience">工作經歷</a>
+        <a href="#goal">求職期許</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="wrap">
+    <section class="hero">
+      <div class="hero-card">
+        <div>
+          <div class="eyebrow">Personal Resume</div>
+          <h1>許秀屏</h1>
+          <div class="role">總務行政｜業務助理｜採購支援</div>
+          <p class="lead">
+            擁有多年行政、總務、業務助理與採購相關工作經驗。
+            重視責任感、工作穩定與團隊合作，個性溫和、善於溝通，
+            希望成為主管放心、同事容易合作的工作夥伴。
+          </p>
+        </div>
+        <div class="hero-stats">
+          <div class="stat"><strong>14年</strong><span>現職穩定任職</span></div>
+          <div class="stat"><strong>4份</strong><span>完整職場歷練</span></div>
+          <div class="stat"><strong>20+年</strong><span>累積工作經驗</span></div>
+          <div class="stat"><strong>54歲</strong><span>成熟穩定的職場態度</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="about">
+      <div class="section-head">
+        <h2>關於我</h2>
+        <div class="section-note">成熟、穩定、好溝通</div>
+      </div>
+      <div class="panel about">
+        <p>
+          您好，我是許秀屏。我個性溫和、隨和，待人親切且善解人意，
+          很重視與主管、同事之間的相處與合作。過去共有4份主要工作經歷，
+          現職已穩定任職約14年。多年職場經驗讓我累積了總務、行政、
+          業務支援、採購協調、文件整理、廠商聯繫與跨部門溝通等實務能力。
+          工作上我認真負責，願意配合，也能耐心處理繁瑣或臨時性的事項。
+          我相信，穩定、責任感與良好的人際互動，是我在職場上最大的優勢。
+        </p>
+      </div>
+    </section>
+
+    <section id="strengths">
+      <div class="section-head">
+        <h2>我的優勢</h2>
+        <div class="section-note">把多年經驗轉化為可靠的工作能力</div>
+      </div>
+      <div class="panel">
+        <div class="skills">
+          <span class="skill">總務行政</span>
+          <span class="skill">業務助理</span>
+          <span class="skill">採購支援</span>
+          <span class="skill">跨部門溝通</span>
+          <span class="skill">廠商聯繫</span>
+          <span class="skill">文件與資料整理</span>
+          <span class="skill">訂單與進度追蹤</span>
+          <span class="skill">細心負責</span>
+          <span class="skill">情緒穩定</span>
+          <span class="skill">善解人意</span>
+          <span class="skill">團隊合作</span>
+          <span class="skill">高工作穩定度</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="experience">
+      <div class="section-head">
+        <h2>工作經歷</h2>
+        <div class="section-note">行政 × 業助 × 採購的完整實務經驗</div>
+      </div>
+      <div class="panel timeline">
+        <article class="job">
+          <div class="years">約 14 年</div>
+          <div>
+            <h3>YONGTEK 富敦科技股份有限公司</h3>
+            <div class="title">總務</div>
+            <ul>
+              <li>負責公司日常總務、行政庶務與辦公用品管理。</li>
+              <li>協助供應商及外部廠商聯繫、詢價、採購與進度追蹤。</li>
+              <li>處理文件、資料整理、歸檔、單據與一般行政作業。</li>
+              <li>協助公司設備、辦公環境及公共區域相關事務。</li>
+              <li>配合各部門處理臨時交辦、會議及公司活動準備。</li>
+              <li>處理日常大小庶務與突發狀況，並維持良好跨部門溝通。</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="job">
+          <div class="years">約 8 年</div>
+          <div>
+            <h3>精密沖壓相關公司</h3>
+            <div class="title">業務助理</div>
+            <ul>
+              <li>協助業務人員處理客戶訂單、報價及相關文件。</li>
+              <li>追蹤訂單、生產、交期及出貨進度。</li>
+              <li>與生產、採購及其他部門協調客戶需求。</li>
+              <li>整理客戶資料、業務文件及出貨相關資料。</li>
+              <li>協助處理客戶詢問與各項業務後勤工作。</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="job">
+          <div class="years">約 4 年</div>
+          <div>
+            <h3>嘉逸機械</h3>
+            <div class="title">業務助理／採購</div>
+            <ul>
+              <li>協助客戶訂單、報價、需求與交期追蹤。</li>
+              <li>負責部分原物料、零件及用品詢價、比價與採購。</li>
+              <li>建立採購訂單，追蹤供應商交貨進度。</li>
+              <li>協助業務、生產及供應商之間的溝通協調。</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="job">
+          <div class="years">早期經歷</div>
+          <div>
+            <h3>凱桃汽車</h3>
+            <div class="title">業務助理</div>
+            <ul>
+              <li>協助新車銷售相關行政流程及客戶資料整理。</li>
+              <li>協助保險、牌照及交車文件準備。</li>
+              <li>協助新車 PDI 交車前檢查相關聯繫與進度確認。</li>
+              <li>追蹤車輛到車、交車進度及業務交辦事項。</li>
+            </ul>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="goal">
+      <div class="section-head">
+        <h2>我的工作態度</h2>
+      </div>
+      <div class="quote">
+        「我不一定是最會表現自己的人，但我希望成為公司裡，可以放心把事情交給我的人。」
+      </div>
+      <div class="panel about" style="margin-top:18px">
+        <p>
+          希望未來能找到一份穩定、適合長期發展的工作。
+          我會以多年累積的職場經驗、成熟穩定的態度與良好的溝通能力，
+          認真完成公司交付的工作，也願意學習新的內容、配合團隊需求，
+          成為值得信賴、能長期合作的一員。
+        </p>
+      </div>
+    </section>
+
+    <div class="footer">
+      © 2026 許秀屏 Personal Resume
+    </div>
+  </main>
+</body>
+</html>
