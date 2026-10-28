@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>企業人力資源提升計畫｜8頁線上簡報</title>
+  <style>
+    :root {
+      --primary: #14532d;
+      --primary-light: #2d7a58;
+      --primary-subtle: #e6f0ea;
+      --accent: #15803d;
+      --dark: #1b2e23;
+      --gray: #55695d;
+      --light-gray: #e2ebe5;
+      --bg: #0f1c15;
+      --slide-bg: #ffffff;
+      --card-bg: #f8faf8;
+      --card-border: #dae5de;
+      --shadow: 0 20px 40px rgba(15, 28, 21, 0.25);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang TC", "Microsoft JhengHei", "Noto Sans TC", sans-serif;
+      background: var(--bg);
+      color: var(--dark);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow-x: hidden;
+    }
+
+    /* Presentation Screen Frame */
+    .deck-container {
+      width: min(1200px, 94vw);
+      height: min(675px, 80vh);
+      aspect-ratio: 16 / 9;
+      position: relative;
+      background: var(--slide-bg);
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Individual Slide */
+    .slide {
+      position: absolute;
+      inset: 0;
+      padding: 48px 64px 72px 64px;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateX(40px);
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background: linear-gradient(135deg, #ffffff 60%, #f4f8f5 100%);
+    }
+
+    .slide.active {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(0);
+      z-index: 2;
+    }
+
+    .slide.prev {
+      transform: translateX(-40px);
+    }
+
+    /* Header */
+    .slide-header {
+      margin-bottom: 24px;
+    }
+
+    .slide-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 14px;
+      background: var(--primary-subtle);
+      color: var(--primary);
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      margin-bottom: 12px;
+    }
+
+    .slide-title {
+      font-size: clamp(24px, 3.2vw, 36px);
+      font-weight: 800;
+      color: var(--primary);
+      line-height: 1.25;
+      letter-spacing: -0.02em;
+    }
+
+    .slide-subtitle {
+      font-size: 15px;
+      color: var(--gray);
+      margin-top: 6px;
+    }
+
+    /* Content Area */
+    .slide-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 18px;
+    }
+
+    /* 3 Bullets / Cards */
+    .bullet-list {
+      display: grid;
+      gap: 16px;
+    }
+
+    .bullet-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-left: 5px solid var(--primary-light);
+      border-radius: 12px;
+      padding: 16px 22px;
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .bullet-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(20, 83, 45, 0.08);
+      border-left-color: var(--primary);
+    }
+
+    .bullet-badge {
+      flex-shrink: 0;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: var(--primary-subtle);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 14px;
+      margin-top: 2px;
+    }
+
+    .bullet-text h4 {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 4px;
+    }
+
+    .bullet-text p {
+      font-size: 14px;
+      color: #3f5247;
+      line-height: 1.6;
+    }
+
+    /* Slide 1 Cover Special Layout */
+    .cover-slide {
+      background: radial-gradient(circle at 90% 10%, rgba(45, 122, 88, 0.12), transparent 40%),
+                  linear-gradient(135deg, #ffffff 50%, #eaf3ed 100%);
+    }
+
+    .cover-hero {
+      margin-bottom: 20px;
+    }
+
+    .cover-hero h1 {
+      font-size: clamp(32px, 4.4vw, 50px);
+      font-weight: 900;
+      color: var(--primary);
+      line-height: 1.15;
+      margin-bottom: 12px;
+    }
+
+    .cover-hero .lead {
+      font-size: 18px;
+      color: var(--gray);
+      font-weight: 500;
+    }
+
+    .cover-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .stat-pill {
+      background: #ffffff;
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 12px 18px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(20, 83, 45, 0.04);
+    }
+
+    .stat-pill strong {
+      display: block;
+      font-size: 24px;
+      color: var(--primary);
+      font-weight: 800;
+    }
+
+    .stat-pill span {
+      font-size: 13px;
+      color: var(--gray);
+    }
+
+    /* 3 Column Grid for Slide 3 */
+    .cols-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .col-card {
+      background: #ffffff;
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border-top: 4px solid var(--primary-light);
+      box-shadow: 0 6px 16px rgba(20, 83, 45, 0.04);
+    }
+
+    .col-card.featured {
+      border-top-color: var(--primary);
+      background: linear-gradient(180deg, #f3f8f5 0%, #ffffff 100%);
+      box-shadow: 0 10px 24px rgba(20, 83, 45, 0.1);
+    }
+
+    .col-card .amount {
+      font-size: 26px;
+      font-weight: 900;
+      color: var(--primary);
+      margin: 8px 0;
+    }
+
+    .col-card h4 {
+      font-size: 17px;
+      color: var(--dark);
+    }
+
+    .col-card p {
+      font-size: 13px;
+      color: #4a5c51;
+      line-height: 1.55;
+    }
+
+    /* Steps Layout for Slide 6 */
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      position: relative;
+    }
+
+    .step-box {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 22px 18px;
+      position: relative;
+    }
+
+    .step-num {
+      width: 28px;
+      height: 28px;
+      background: var(--primary);
+      color: #fff;
+      font-weight: 800;
+      font-size: 13px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 12px;
+    }
+
+    .step-box h4 {
+      font-size: 17px;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+
+    .step-box p {
+      font-size: 13.5px;
+      color: #3f5247;
+      line-height: 1.6;
+    }
+
+    /* Footer & Navigation Controls */
+    .deck-footer {
+      width: min(1200px, 94vw);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 18px;
+      color: #9ab4a5;
+      font-size: 14px;
+      padding: 0 12px;
+    }
+
+    .nav-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn-nav {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #fff;
+      padding: 8px 18px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .btn-nav:hover:not(:disabled) {
+      background: var(--primary-light);
+      border-color: var(--primary-light);
+      color: #ffffff;
+      transform: translateY(-1px);
+    }
+
+    .btn-nav:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+
+    .page-indicator {
+      font-weight: 700;
+      color: #e5f1ea;
+      font-size: 15px;
+      min-width: 60px;
+      text-align: center;
+    }
+
+    .dots-nav {
+      display: flex;
+      gap: 8px;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.25);
+      cursor: pointer;
+      transition: all 0.25s;
+    }
+
+    .dot.active {
+      background: #4ade80;
+      width: 24px;
+      border-radius: 999px;
+    }
+
+    .shortcuts-hint {
+      font-size: 12px;
+      color: #799484;
+    }
+
+    /* Print / PDF Export Friendly */
+    @media print {
+      body {
+        background: #fff;
+        padding: 0;
+      }
+      .deck-container {
+        width: 100%;
+        height: auto;
+        box-shadow: none;
+        overflow: visible;
+      }
+      .slide {
+        position: relative !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        transform: none !important;
+        page-break-after: always;
+        height: 100vh;
+        inset: auto;
+      }
+      .deck-footer {
+        display: none !important;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .deck-container {
+        height: auto;
+        min-height: 520px;
+      }
+      .slide {
+        padding: 28px 24px 36px 24px;
+        position: relative;
+        display: none;
+      }
+      .slide.active {
+        display: flex;
+      }
+      .cols-3, .steps-grid, .cover-stats {
+        grid-template-columns: 1fr;
+      }
+      .shortcuts-hint {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Slide Deck Frame -->
+  <main class="deck-container" id="deckContainer">
+
+    <!-- SLIDE 1: Cover -->
+    <section class="slide cover-slide active" data-index="1">
+      <div class="slide-header">
+        <span class="slide-tag">勞動部勞動力發展署・政策培訓補助</span>
+      </div>
+      <div class="slide-content">
+        <div class="cover-hero">
+          <h1>企業人力資源提升計畫</h1>
+          <div class="lead">強化在職人力素質，提升產業整體競爭力</div>
+        </div>
+
+        <div class="cover-stats">
+          <div class="stat-pill">
+            <strong>200 萬</strong>
+            <span>最高補助額度上限</span>
+          </div>
+          <div class="stat-pill">
+            <strong>3 大方案</strong>
+            <span>個別／聯合／產業推升</span>
+          </div>
+          <div class="stat-pill">
+            <strong>5 大分署</strong>
+            <span>全台在地一對一諮詢</span>
+          </div>
+        </div>
+
+        <div class="bullet-list">
+          <div class="bullet-card">
+            <div class="bullet-badge">1</div>
+            <div class="bullet-text">
+              <h4>政策核心宗旨</h4>
+              <p>由勞動部勞動力發展署推動，專為企業量身打造在職勞工技能培訓與費用補助機制。</p>
+            </div>
+          </div>
+          <div class="bullet-card">
+            <div class="bullet-badge">2</div>
+            <div class="bullet-text">
+              <h4>高額經費挹注</h4>
+              <p>依專案模式提供 95 萬至最高 200 萬元補助，實質分攤並大幅降低公司內部教育訓練成本。</p>
+            </div>
+          </div>
+          <div class="bullet-card">
+            <div class="bullet-badge">3</div>
+            <div class="bullet-text">
+              <h4>勞資雙贏價值</h4>
+              <p>協助員工解決關鍵專業職能斷層，為企業蓄積厚實人才資本與長遠經營優勢。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 2: Purpose & Motivation -->
+    <section class="slide" data-index="2">
+      <div class="slide-header">
+        <span class="slide-tag">計畫背景與目的</span>
+        <h2 class="slide-title">對齊企業營運策略，精準補足內部技能缺口</h2>
+        <div class="slide-subtitle">從組織中長程策略出發，將培訓轉化為實質營運驅動力</div>
+      </div>
+      <div class="slide-content">
+        <div class="bullet-list">
+          <div class="bullet-card">
+            <div class="bullet-badge">01</div>
+            <div class="bullet-text">
+              <h4>精準填補組織技能缺口</h4>
+              <p>盤點員工在實務作業與新興技術上的職能斷層，透過系統化外部及內部培訓迅速拉升即戰力。</p>
+            </div>
+          </div>
+          <div class="bullet-card">
+            <div class="bullet-badge">02</div>
+            <div class="bullet-text">
+              <h4>無縫對接公司中長期營運目標</h4>
+              <p>將辦訓主題緊密扣合公司未來業務拓展、數位升級與市場轉型藍圖，培育推動成長的核心幹部。</p>
+            </div>
+          </div>
+          <div class="bullet-card">
+            <div class="bullet-badge">03</div>
+            <div class="bullet-text">
+              <h4>活化內部人才庫與留才向心力</h4>
+              <p>提供在職員工扎實的職涯進修資源與能力躍升機會，有效提升同仁滿意度與長期團隊凝聚力。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 3: 3 Programs Overview -->
+    <section class="slide" data-index="3">
+      <div class="slide-header">
+        <span class="slide-tag">補助類型與額度</span>
+        <h2 class="slide-title">彈性多元的三大方案，滿足不同規模辦訓需求</h2>
+        <div class="slide-subtitle">針對獨立辦訓、供應鏈串聯及政策推升提供最適補助級距</div>
+      </div>
+      <div class="slide-content">
+        <div class="cols-3">
+          <div class="col-card">
+            <div>
+              <span class="slide-tag" style="padding:2px 8px;font-size:11px;">單一企業</span>
+              <h4>個別型訓練計畫</h4>
+              <div class="amount">95 萬元</div>
+            </div>
+            <p>單一公司自主申辦，完全依自身內部需求量身打造課程，具最高排課彈性。</p>
+          </div>
+          <div class="col-card">
+            <div>
+              <span class="slide-tag" style="padding:2px 8px;font-size:11px;">跨企協同</span>
+              <h4>聯合型訓練計畫</h4>
+              <div class="amount">190 萬元</div>
+            </div>
+            <p>串聯上下游供應鏈夥伴或集團子公司共同辦訓，發揮跨域資源共享與規模綜效。</p>
+          </div>
+          <div class="col-card featured">
+            <div>
+              <span class="slide-tag" style="padding:2px 8px;font-size:11px;background:#d1fae5;color:#065f46;">重點政策</span>
+              <h4>產業推升型訓練計畫</h4>
+              <div class="amount">200 萬元</div>
+            </div>
+            <p>聚焦國家關鍵發展產業、前瞻關鍵技術、數位轉型或淨零碳排之重點升級專案。</p>
+          </div>
+        </div>
+
+        <div class="bullet-list" style="margin-top:4px;">
+          <div class="bullet-card" style="padding:10px 18px;">
+            <div class="bullet-badge" style="width:24px;height:24px;font-size:12px;">✓</div>
+            <div class="bullet-text">
+              <h4>額度精準適配</h4>
+              <p>企業可依據現行組織規模、年度培訓預算與外部合作夥伴，彈性選擇最合適之申請專案。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 4: Individual Plan Details -->
+    <section class="slide" data-index="4">
+      <div class="slide-header">
+        <span class="slide-tag">方案深度解析・01</span>
+        <h2 class="slide-title">個別型計畫：打造企業專屬的內部培訓地圖</h2>
+        <div class="slide-subtitle">最適合企業獨立自辦，全面提升各部門專職能力</div>
+      </div>
+      <div class="slide-content">
+        <div class="bullet-list">
+          <div class="bullet-card">
+            <div class="bullet-badge">01</div>
+            <div class="bullet-text">
+              <h4>自主客製化課程設計</h4>
+              <p>可自由涵蓋管理職能、研發技術、行政業務庶務、ESG 與資訊技能，精準切合團隊當前迫切需求。</p>
+            </div>
+          </div>
+          <div class="bullet-card">
+            <div class="bullet-badge">02</div>
+            <div class="bullet-text">
+              <h4>高度掌握師資與排課期程</h4>
+              <p>自主遴選產業界知名外部業師或資深內部講師，上課時間完全配合公司專案檔期與輪班作息。</p>
+            </div>
+          </div>
+          <div class="bullet-card">
+            <div class="bullet-badge">03</div>
+            <div class="bullet-text">
+              <h4>立竿見影分攤培訓成本</h4>
+              <p>將例行年度預算或中高階主管研習費用轉由政府專案分攤，最高享有 95 萬元實質經費補助挹注。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 5: Joint & Industry Upgrading -->
+    <section class="slide" data-index="5">
+      <div class="slide-header">
+        <span class="slide-tag">方案深度解析・02 & 03</span>
+        <h2 class="slide-title">聯合與推升型：跨界整合資源，驅動前瞻轉型</h2>
+        <div class="slide-subtitle">以生態系規模推動前瞻革新，爭取高額專案資助</div>
+      </div>
+      <div class="slide-content">
+        <div class="bullet-list">
+          <div class="bullet-card">
+            <div class="bullet-badge">01</div>
+            <div class="bullet-text">
+              <h4>建構供應鏈產業生態共好圈</h4>
+              <p>主導企業攜手上下游協力廠商或關係企業聯合辦訓，建立統一之作業標準與產業共識體系。</p>
+            </div>
+          </div>
+          <div class="bullet-card">
+            <div class="bullet-badge">02</div>
+            <div class="bullet-text">
+              <h4>緊扣國家前瞻戰略技術核心</h4>
+              <p>契合生成式 AI 應用、智慧製造、綠色淨零碳排等前瞻重點領域，推動組織跨世代競爭力躍遷。</p>
+            </div>
+          </div>
+          <div class="bullet-card">
+            <div class="bullet-badge">03</div>
+            <div class="bullet-text">
+              <h4>規模經濟效益與最高 200 萬資助</h4>
+              <p>透過多方協同辦訓有效壓低單人均攤成本，同時解鎖 190 萬至 200 萬元之頂規政府專案補助。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 6: Application Process -->
+    <section class="slide" data-index="6">
+      <div class="slide-header">
+        <span class="slide-tag">申辦作業指南</span>
+        <h2 class="slide-title">標準化申辦三步驟，線上送件快速核定</h2>
+        <div class="slide-subtitle">流程制度化且資訊透明，各分署專人逐案把關審查</div>
+      </div>
+      <div class="slide-content">
+        <div class="steps-grid">
+          <div class="step-box">
+            <div class="step-num">1</div>
+            <h4>步驟一：線上提出申請</h4>
+            <p>至「補助企業辦理訓練資訊系統」（onjobtraining.wda.gov.tw）註冊填報年度辦訓計畫與課程大綱。</p>
+          </div>
+          <div class="step-box">
+            <div class="step-num">2</div>
+            <h4>步驟二：所在地分署審查</h4>
+            <p>備齊佐證文件電子檔或紙本，送交訓練所在地主管分署進行資格與計畫合理性專業審查。</p>
+          </div>
+          <div class="step-box">
+            <div class="step-num">3</div>
+            <h4>步驟三：核定開訓與核銷</h4>
+            <p>審核通過後依計畫落實執行訓練，課程結束後檢附學員出缺勤紀錄與核銷單據請領款項。</p>
+          </div>
+        </div>
+
+        <div class="bullet-list" style="margin-top:6px;">
+          <div class="bullet-card" style="padding:12px 20px;">
+            <div class="bullet-badge">★</div>
+            <div class="bullet-text">
+              <h4>申辦關鍵提醒</h4>
+              <p>建議提前於開課前 1~2 個月完成線上送件，預留審查補件與修正緩衝期，確保培訓期程如期展開。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 7: Contact & Regional Offices -->
+    <section class="slide" data-index="7">
+      <div class="slide-header">
+        <span class="slide-tag">官方諮詢窗口</span>
+        <h2 class="slide-title">全台五大分署在地諮詢，全程輔導不卡關</h2>
+        <div class="slide-subtitle">單一免付費專線搭配在地服務分署，提供最即時之法規諮詢</div>
+      </div>
+      <div class="slide-content">
+        <div class="bullet-list">
+          <div class="bullet-card">
+            <div class="bullet-badge">01</div>
+            <div class="bullet-text">
+              <h4>全國免付費諮詢專線</h4>
+              <p>致電 <strong>0800-777-888</strong>，由專業客服專人快速解答計畫申辦門檻、身分資格與系統操作諮詢。</p>
+            </div>
+          </div>
+          <div class="bullet-card">
+            <div class="bullet-badge">02</div>
+            <div class="bullet-text">
+              <h4>全台北中南東五大分署專人窗口</h4>
+              <p>北基宜花金馬 (02-89956399)、桃竹苗 (03-4855368)、中彰投 (04-23592181)、雲嘉南 (06-6985945)、高屏澎東 (07-8210171) 提供一對一審核輔導。</p>
+            </div>
+          </div>
+          <div class="bullet-card">
+            <div class="bullet-badge">03</div>
+            <div class="bullet-text">
+              <h4>在職訓練資訊系統隨時查核進度</h4>
+              <p>登入專屬系統入口（<strong>onjobtraining.wda.gov.tw</strong>），即時掌握申報、審查、核定與核銷全流程動態。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 8: Action Plan & Conclusion -->
+    <section class="slide" data-index="8">
+      <div class="slide-header">
+        <span class="slide-tag">行動建議與結語</span>
+        <h2 class="slide-title">立即盤點培訓需求，掌握補助契機啟動升級</h2>
+        <div class="slide-subtitle">把握年度補助申請契機，以優質人才驅動企業長青基業</div>
+      </div>
+      <div class="slide-content">
+        <div class="bullet-list">
+          <div class="bullet-card">
+            <div class="bullet-badge">01</div>
+            <div class="bullet-text">
+              <h4>全面盤點內部關鍵職能缺口</h4>
+              <p>即刻啟動跨部門主管訪談，精準辨識業務弱項與新技術挑戰，擬定具體年度課程主題與目標對象。</p>
+            </div>
+          </div>
+          <div class="bullet-card">
+            <div class="bullet-badge">02</div>
+            <div class="bullet-text">
+              <h4>提早備齊申請計畫書與課綱</h4>
+              <p>預先完成內外部師資接洽與預算粗估，搶在受理高峰前完成線上提報，確保核定進度領先同業。</p>
+            </div>
+          </div>
+          <div class="bullet-card">
+            <div class="bullet-badge">03</div>
+            <div class="bullet-text">
+              <h4>創造企業永續與同仁成長雙贏</h4>
+              <p>充分將政策補助轉化為組織成長動力，兼顧同仁專業身價成長與企業長遠營運競爭力。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Navigation Deck Footer -->
+  <footer class="deck-footer">
+    <div class="shortcuts-hint">
+      提示：可用鍵盤 ← → 方向鍵或空白鍵切換簡報
+    </div>
+
+    <div class="nav-controls">
+      <button class="btn-nav" id="btnPrev" aria-label="上一頁">
+        <span>←</span> 上一頁
+      </button>
+
+      <div class="dots-nav" id="dotsContainer">
+        <!-- Dots injected by JS -->
+      </div>
+
+      <div class="page-indicator" id="pageIndicator">01 / 08</div>
+
+      <button class="btn-nav" id="btnNext" aria-label="下一頁">
+        下一頁 <span>→</span>
+      </button>
+
+      <button class="btn-nav" id="btnFullscreen" title="切換全螢幕">
+        ⛶ 全螢幕
+      </button>
+    </div>
+  </footer>
+
+  <!-- Interactive Slide Controller Script -->
+  <script>
+    (function () {
+      const slides = Array.from(document.querySelectorAll('.slide'));
+      const total = slides.length;
+      let current = 0;
+
+      const btnPrev = document.getElementById('btnPrev');
+      const btnNext = document.getElementById('btnNext');
+      const pageIndicator = document.getElementById('pageIndicator');
+      const dotsContainer = document.getElementById('dotsContainer');
+      const btnFullscreen = document.getElementById('btnFullscreen');
+      const deckContainer = document.getElementById('deckContainer');
+
+      // Create dots
+      dotsContainer.innerHTML = '';
+      slides.forEach((_, idx) => {
+        const dot = document.createElement('div');
+        dot.className = 'dot' + (idx === 0 ? ' active' : '');
+        dot.title = `切換到第 ${idx + 1} 頁`;
+        dot.addEventListener('click', () => goToSlide(idx));
+        dotsContainer.appendChild(dot);
+      });
+      const dots = Array.from(dotsContainer.querySelectorAll('.dot'));
+
+      function updateSlide(index) {
+        slides.forEach((slide, idx) => {
+          slide.classList.remove('active', 'prev');
+          if (idx === index) {
+            slide.classList.add('active');
+          } else if (idx < index) {
+            slide.classList.add('prev');
+          }
+        });
+
+        dots.forEach((dot, idx) => {
+          dot.classList.toggle('active', idx === index);
+        });
+
+        const pad = (n) => String(n).padStart(2, '0');
+        pageIndicator.textContent = `${pad(index + 1)} / ${pad(total)}`;
+
+        btnPrev.disabled = index === 0;
+        btnNext.disabled = index === total - 1;
+      }
+
+      function goToSlide(index) {
+        if (index < 0 || index >= total) return;
+        current = index;
+        updateSlide(current);
+      }
+
+      function nextSlide() {
+        if (current < total - 1) {
+          goToSlide(current + 1);
+        }
+      }
+
+      function prevSlide() {
+        if (current > 0) {
+          goToSlide(current - 1);
+        }
+      }
+
+      // Buttons
+      btnNext.addEventListener('click', nextSlide);
+      btnPrev.addEventListener('click', prevSlide);
+
+      // Keyboard Controls
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') {
+          e.preventDefault();
+          nextSlide();
+        } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+          e.preventDefault();
+          prevSlide();
+        } else if (e.key === 'Home') {
+          e.preventDefault();
+          goToSlide(0);
+        } else if (e.key === 'End') {
+          e.preventDefault();
+          goToSlide(total - 1);
+        }
+      });
+
+      // Fullscreen toggle
+      btnFullscreen.addEventListener('click', () => {
+        if (!document.fullscreenElement) {
+          deckContainer.requestFullscreen().catch(() => {});
+        } else {
+          document.exitFullscreen().catch(() => {});
+        }
+      });
+
+      // Touch Swipe Detection for mobile
+      let touchStartX = 0;
+      deckContainer.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+      }, { passive: true });
+
+      deckContainer.addEventListener('touchend', (e) => {
+        const touchEndX = e.changedTouches[0].screenX;
+        const diff = touchStartX - touchEndX;
+        if (Math.abs(diff) > 40) {
+          if (diff > 0) nextSlide();
+          else prevSlide();
+        }
+      }, { passive: true });
+
+      // Init
+      updateSlide(current);
+    })();
+  </script>
+</body>
+</html>
