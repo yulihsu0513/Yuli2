@@ -1,0 +1,1841 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>主廚屋 CHEF HOUSE · 線上點餐系統</title>
+  <meta name="description" content="主廚屋精緻便當線上點餐系統，支援客製化米飯選配、即時試算、團購統計與訂單管理。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary: #87391f;
+      --primary-hover: #6e2c16;
+      --primary-light: #faeee9;
+      --accent: #d97706;
+      --accent-light: #fef3c7;
+      --dark: #2a1f1a;
+      --gray: #6b5a52;
+      --light-gray: #f2ece6;
+      --bg: #f8f5f0;
+      --card-bg: #ffffff;
+      --border: #e8ded4;
+      --success: #15803d;
+      --shadow-sm: 0 4px 12px rgba(42, 31, 26, 0.05);
+      --shadow-md: 0 10px 28px rgba(42, 31, 26, 0.08);
+      --shadow-lg: 0 20px 45px rgba(42, 31, 26, 0.12);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: "Noto Sans TC", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--dark);
+      line-height: 1.6;
+      padding-bottom: 90px;
+    }
+
+    /* Top Navigation Header */
+    .site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 20px;
+    }
+
+    .nav-inner {
+      max-width: 1240px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .brand-logo-badge {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, var(--primary), #b44f2b);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 22px;
+      box-shadow: 0 4px 12px rgba(135, 57, 31, 0.25);
+    }
+
+    .brand-title h1 {
+      font-size: 20px;
+      font-weight: 900;
+      letter-spacing: 0.05em;
+      color: var(--primary);
+      line-height: 1.2;
+    }
+
+    .brand-title span {
+      font-size: 11px;
+      color: var(--gray);
+      letter-spacing: 0.15em;
+      font-weight: 700;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-nav-action {
+      background: var(--light-gray);
+      border: 1px solid var(--border);
+      color: var(--dark);
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .btn-nav-action:hover {
+      background: var(--primary-light);
+      color: var(--primary);
+      border-color: var(--primary);
+    }
+
+    /* Hero Banner */
+    .hero-banner {
+      background: linear-gradient(135deg, #743219 0%, #a64c27 50%, #d47a3e 100%);
+      color: #ffffff;
+      padding: 36px 20px 32px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(116, 50, 25, 0.15);
+    }
+
+    .hero-banner::after {
+      content: "";
+      position: absolute;
+      top: -60px;
+      right: -60px;
+      width: 240px;
+      height: 240px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .hero-content {
+      max-width: 800px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(8px);
+      padding: 4px 14px;
+      border-radius: 999px;
+      font-size: 12.5px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      letter-spacing: 0.05em;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #4ade80;
+      box-shadow: 0 0 8px #4ade80;
+    }
+
+    .hero-title {
+      font-size: clamp(26px, 4vw, 38px);
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      margin-bottom: 10px;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .hero-desc {
+      font-size: 14px;
+      opacity: 0.94;
+      line-height: 1.7;
+    }
+
+    .hero-notice-bar {
+      margin-top: 16px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0, 0, 0, 0.18);
+      padding: 6px 18px;
+      border-radius: 999px;
+      font-size: 13px;
+    }
+
+    /* Main App Layout Grid */
+    .app-container {
+      max-width: 1240px;
+      margin: 28px auto;
+      padding: 0 16px;
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 28px;
+      align-items: flex-start;
+    }
+
+    /* Left: Menu Section */
+    .menu-section {
+      width: 100%;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+
+    .category-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .cat-pill {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--gray);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .cat-pill:hover,
+    .cat-pill.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(135, 57, 31, 0.2);
+    }
+
+    .search-box {
+      position: relative;
+      min-width: 200px;
+    }
+
+    .search-input {
+      width: 100%;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 8px 16px 8px 36px;
+      font-size: 13.5px;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    .search-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(135, 57, 31, 0.1);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 14px;
+      color: var(--gray);
+    }
+
+    /* Menu Cards Grid */
+    .bento-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 20px;
+    }
+
+    .bento-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+    }
+
+    .bento-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+      border-color: #d1bfae;
+    }
+
+    .bento-card.has-selected {
+      border: 2px solid var(--primary);
+      box-shadow: 0 8px 24px rgba(135, 57, 31, 0.12);
+    }
+
+    .bento-photo-wrapper {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      background: #eee4d7;
+      overflow: hidden;
+    }
+
+    .bento-photo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.35s ease;
+    }
+
+    .bento-card:hover .bento-photo {
+      transform: scale(1.04);
+    }
+
+    .tag-badge {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: rgba(42, 31, 26, 0.88);
+      backdrop-filter: blur(6px);
+      color: #fff;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+
+    .price-pill {
+      position: absolute;
+      bottom: 12px;
+      right: 12px;
+      background: rgba(135, 57, 31, 0.92);
+      backdrop-filter: blur(6px);
+      color: #fff;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 16px;
+      font-weight: 900;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .bento-body {
+      padding: 18px 20px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      flex: 1;
+      justify-content: space-between;
+    }
+
+    .bento-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .bento-name {
+      font-size: 19px;
+      font-weight: 900;
+      color: var(--dark);
+      letter-spacing: -0.01em;
+    }
+
+    /* Rice & Customization Options Inside Card */
+    .bento-options {
+      background: #fbf8f4;
+      border: 1px solid #ebdcd0;
+      border-radius: 14px;
+      padding: 12px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .option-group label {
+      display: block;
+      font-size: 11.5px;
+      font-weight: 800;
+      color: var(--gray);
+      margin-bottom: 4px;
+    }
+
+    .option-select {
+      width: 100%;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 6px 10px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--dark);
+      outline: none;
+    }
+
+    /* Quick Tags / Custom Flavors */
+    .flavor-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .flavor-tag {
+      font-size: 11px;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      color: var(--gray);
+      padding: 3px 8px;
+      border-radius: 6px;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.15s;
+    }
+
+    .flavor-tag.active {
+      background: var(--accent-light);
+      color: #92400e;
+      border-color: #f59e0b;
+      font-weight: 700;
+    }
+
+    /* Quantity Controls */
+    .bento-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 6px;
+      border-top: 1px dashed var(--border);
+    }
+
+    .item-subtotal-text {
+      font-size: 13px;
+      color: var(--gray);
+    }
+
+    .item-subtotal-text strong {
+      color: var(--primary);
+      font-size: 16px;
+    }
+
+    .qty-stepper {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-qty {
+      width: 34px;
+      height: 34px;
+      border: 1px solid var(--border);
+      background: #ffffff;
+      color: var(--primary);
+      border-radius: 50%;
+      font-size: 18px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
+    }
+
+    .btn-qty:hover {
+      background: var(--primary-light);
+      border-color: var(--primary);
+    }
+
+    .btn-qty.plus {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #ffffff;
+    }
+
+    .btn-qty.plus:hover {
+      background: var(--primary-hover);
+    }
+
+    .qty-number {
+      font-size: 16px;
+      font-weight: 900;
+      min-width: 24px;
+      text-align: center;
+    }
+
+    /* Right: Checkout & Customer Drawer */
+    .checkout-drawer {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      box-shadow: var(--shadow-md);
+      padding: 24px;
+      position: sticky;
+      top: 86px;
+    }
+
+    .drawer-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 18px;
+    }
+
+    .drawer-title {
+      font-size: 18px;
+      font-weight: 900;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .cart-count-badge {
+      background: var(--primary-light);
+      color: var(--primary);
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .btn-clear-cart {
+      background: none;
+      border: none;
+      color: #991b1b;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    /* Cart Items List */
+    .cart-items-box {
+      max-height: 220px;
+      overflow-y: auto;
+      margin-bottom: 16px;
+      padding-right: 4px;
+    }
+
+    .cart-empty-state {
+      padding: 30px 10px;
+      text-align: center;
+      color: #9ca3af;
+      font-size: 14px;
+    }
+
+    .cart-item-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 10px 0;
+      border-bottom: 1px dashed var(--border);
+      font-size: 13.5px;
+    }
+
+    .cart-item-row:last-child { border-bottom: none; }
+
+    .cart-item-name {
+      font-weight: 800;
+      color: var(--dark);
+    }
+
+    .cart-item-meta {
+      font-size: 12px;
+      color: var(--gray);
+      margin-top: 2px;
+    }
+
+    .cart-item-price {
+      font-weight: 800;
+      color: var(--primary);
+      white-space: nowrap;
+    }
+
+    /* Customer Form Fields */
+    .form-group {
+      margin-bottom: 12px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 800;
+      color: #4b3e37;
+      margin-bottom: 5px;
+    }
+
+    .form-input,
+    .form-select,
+    .form-textarea {
+      width: 100%;
+      background: #fdfbf9;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 9px 12px;
+      font-size: 13.5px;
+      color: var(--dark);
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    .form-input:focus,
+    .form-select:focus,
+    .form-textarea:focus {
+      border-color: var(--primary);
+      background: #ffffff;
+      box-shadow: 0 0 0 3px rgba(135, 57, 31, 0.1);
+    }
+
+    .form-textarea {
+      resize: vertical;
+      min-height: 54px;
+    }
+
+    /* Address toggle container */
+    .delivery-box {
+      display: none;
+    }
+
+    .delivery-box.show {
+      display: block;
+    }
+
+    /* Total Summary Box */
+    .summary-box {
+      background: var(--light-gray);
+      border-radius: 14px;
+      padding: 14px 16px;
+      margin: 16px 0;
+      font-size: 13px;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      color: var(--gray);
+      margin-bottom: 6px;
+    }
+
+    .summary-row.total-row {
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px solid #d4c8bc;
+      font-size: 17px;
+      font-weight: 900;
+      color: var(--primary);
+      margin-bottom: 0;
+    }
+
+    .btn-submit-order {
+      width: 100%;
+      background: linear-gradient(135deg, var(--primary), #ab4a24);
+      border: none;
+      border-radius: 14px;
+      color: #ffffff;
+      padding: 14px;
+      font-size: 16px;
+      font-weight: 900;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(135, 57, 31, 0.25);
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-submit-order:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px rgba(135, 57, 31, 0.35);
+      background: linear-gradient(135deg, var(--primary-hover), #9b4320);
+    }
+
+    .btn-submit-order:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+      box-shadow: none;
+      transform: none;
+    }
+
+    /* Mobile Floating Bar */
+    .mobile-float-bar {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid var(--border);
+      padding: 12px 18px;
+      z-index: 90;
+      box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.08);
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .mobile-total-box span {
+      font-size: 12px;
+      color: var(--gray);
+    }
+
+    .mobile-total-box strong {
+      display: block;
+      font-size: 20px;
+      font-weight: 900;
+      color: var(--primary);
+      line-height: 1.1;
+    }
+
+    .btn-mobile-checkout {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 10px 22px;
+      border-radius: 999px;
+      font-size: 15px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    /* Modal Styling */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(35, 20, 12, 0.65);
+      backdrop-filter: blur(6px);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal-overlay.show {
+      display: flex;
+    }
+
+    .modal-window {
+      background: #ffffff;
+      border-radius: 24px;
+      width: min(540px, 100%);
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 28px;
+      box-shadow: var(--shadow-lg);
+      position: relative;
+    }
+
+    .modal-close-btn {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      background: var(--light-gray);
+      border: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gray);
+    }
+
+    .modal-header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .modal-header .icon {
+      font-size: 48px;
+      margin-bottom: 8px;
+    }
+
+    .modal-header h3 {
+      font-size: 22px;
+      font-weight: 900;
+      color: var(--primary);
+    }
+
+    .modal-receipt-card {
+      background: #fdfaf6;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px;
+      margin: 16px 0;
+    }
+
+    .receipt-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13.5px;
+      padding: 6px 0;
+      border-bottom: 1px dashed #e6dace;
+    }
+
+    .receipt-row:last-child { border-bottom: none; }
+
+    .receipt-order-id {
+      background: var(--accent-light);
+      color: #92400e;
+      font-weight: 900;
+      padding: 8px 14px;
+      border-radius: 8px;
+      text-align: center;
+      font-size: 15px;
+      letter-spacing: 0.05em;
+      margin-bottom: 12px;
+    }
+
+    .btn-action-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .btn-copy-line {
+      background: #06c755;
+      color: #ffffff;
+      border: none;
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .btn-modal-done {
+      background: var(--primary);
+      color: #ffffff;
+      border: none;
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    @media (max-width: 900px) {
+      .app-container {
+        grid-template-columns: 1fr;
+      }
+      .checkout-drawer {
+        position: relative;
+        top: 0;
+        margin-top: 10px;
+      }
+      .mobile-float-bar {
+        display: flex;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Sticky Navigation -->
+  <header class="site-nav">
+    <div class="nav-inner">
+      <a href="order.html" class="brand-group">
+        <div class="brand-logo-badge">🍱</div>
+        <div class="brand-title">
+          <h1>主廚屋</h1>
+          <span>CHEF HOUSE · BENTO</span>
+        </div>
+      </a>
+
+      <div class="nav-actions">
+        <button class="btn-nav-action" onclick="openMenuImageModal()">
+          📄 實體菜單
+        </button>
+        <button class="btn-nav-action" onclick="openHistoryModal()">
+          📜 歷史訂單
+        </button>
+        <button class="btn-nav-action" onclick="openGroupToolModal()">
+          👥 團購統計
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Banner -->
+  <section class="hero-banner">
+    <div class="hero-content">
+      <div class="hero-status-pill">
+        <span class="status-dot"></span>
+        <span id="storeStatusText">營業中 · 歡迎預約點餐</span>
+      </div>
+      <h2 class="hero-title">主廚屋 精緻現做便當</h2>
+      <p class="hero-desc">
+        每週一至週五 供應中餐與晚餐 ｜ 堅持嚴選新鮮食材、現點現做美味便當<br>
+        提供白飯與養生五穀飯升級（+$15）客製化米飯選配
+      </p>
+      <div class="hero-notice-bar">
+        <span>⏰ 供餐時段：午餐 11:00–13:30 ｜ 晚餐 17:00–19:30</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Container -->
+  <main class="app-container">
+
+    <!-- Left: Menu Grid & Search -->
+    <section class="menu-section">
+      <div class="toolbar">
+        <div class="category-pills">
+          <button class="cat-pill active" onclick="filterCategory('all', this)">全部餐點</button>
+          <button class="cat-pill" onclick="filterCategory('chicken', this)">招牌雞肉 (3)</button>
+          <button class="cat-pill" onclick="filterCategory('pork', this)">人氣豬肉 (3)</button>
+          <button class="cat-pill" onclick="filterCategory('seafood', this)">鮮撈鮮魚 (1)</button>
+          <button class="cat-pill" onclick="filterCategory('veggie', this)">健康鮮蔬 (1)</button>
+        </div>
+
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input
+            type="text"
+            id="searchInput"
+            class="search-input"
+            placeholder="搜尋便當名稱、特色..."
+            oninput="handleSearch()"
+          >
+        </div>
+      </div>
+
+      <!-- Bento Cards Grid (Dynamically Injected) -->
+      <div id="bentoGrid" class="bento-grid">
+        <!-- Rendered by JS -->
+      </div>
+    </section>
+
+    <!-- Right: Checkout & Cart Drawer -->
+    <aside class="checkout-drawer" id="checkoutSection">
+      <div class="drawer-header">
+        <div class="drawer-title">
+          <span>🛒 點餐清單</span>
+          <span class="cart-count-badge" id="cartCountBadge">0 份</span>
+        </div>
+        <button class="btn-clear-cart" onclick="clearCart()">清空購物車</button>
+      </div>
+
+      <!-- Selected Items -->
+      <div class="cart-items-box" id="cartItemsList">
+        <div class="cart-empty-state">購物車內尚未加入便當<br>請從左側點選數量「＋」開始點餐</div>
+      </div>
+
+      <!-- Customer Form Fields -->
+      <div class="customer-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">訂購人姓名 *</label>
+            <input type="text" id="customerName" class="form-input" placeholder="例如：陳小華">
+          </div>
+          <div class="form-group">
+            <label class="form-label">所屬部門 *</label>
+            <select id="department" class="form-select">
+              <option value="">請選擇</option>
+              <option value="業務">業務</option>
+              <option value="行政">行政</option>
+              <option value="會計">會計</option>
+              <option value="採購">採購</option>
+              <option value="研發">研發</option>
+              <option value="品保">品保</option>
+              <option value="生產">生產</option>
+              <option value="其他">其他</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">電話 / 分機</label>
+            <input type="text" id="phone" class="form-input" placeholder="選填，如：#123">
+          </div>
+          <div class="form-group">
+            <label class="form-label">取餐方式 *</label>
+            <select id="deliveryMethod" class="form-select" onchange="handleDeliveryChange()">
+              <option value="自取">門市自取</option>
+              <option value="外送">專人外送</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Conditional Delivery Address -->
+        <div class="form-group delivery-box" id="deliveryAddressBox">
+          <label class="form-label">外送地址 *</label>
+          <input type="text" id="deliveryAddress" class="form-input" placeholder="請輸入完整外送地址">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">是否需要餐具 *</label>
+            <select id="tableware" class="form-select">
+              <option value="需要餐具">需要免洗餐具</option>
+              <option value="不需要餐具">環保愛地球，不需餐具</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">公司統一編號</label>
+            <input type="text" id="taxId" class="form-input" maxlength="8" placeholder="選填 8 碼統編">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">期望送達 / 取餐時間</label>
+          <input type="datetime-local" id="deliveryTime" class="form-input">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">訂單備註</label>
+          <textarea id="orderNote" class="form-textarea" placeholder="例如：飯跟醬汁分開、請先電話聯繫..."></textarea>
+        </div>
+      </div>
+
+      <!-- Price Breakdown -->
+      <div class="summary-box">
+        <div class="summary-row">
+          <span>餐點數量</span>
+          <span id="summaryTotalQty">0 份</span>
+        </div>
+        <div class="summary-row">
+          <span>餐點小計</span>
+          <span id="summaryMealSubtotal">$0</span>
+        </div>
+        <div class="summary-row">
+          <span>養生五穀飯加額 (+$15/份)</span>
+          <span id="summaryRiceExtra">$0</span>
+        </div>
+        <div class="summary-row total-row">
+          <span>應付總金額</span>
+          <span id="summaryGrandTotal">$0</span>
+        </div>
+      </div>
+
+      <button id="btnSubmitOrder" class="btn-submit-order" onclick="submitOrder()">
+        <span>✓ 確認送出訂單</span>
+      </button>
+    </aside>
+
+  </main>
+
+  <!-- Mobile Floating Checkout Bar -->
+  <div class="mobile-float-bar">
+    <div class="mobile-total-box">
+      <span>總計 (<strong id="mobileQtyText">0</strong> 份)</span>
+      <strong id="mobileTotalText">$0</strong>
+    </div>
+    <button class="btn-mobile-checkout" onclick="scrollToCheckout()">
+      前往結帳 🛒
+    </button>
+  </div>
+
+  <!-- Modal 1: 實體紙本菜單彈窗 -->
+  <div class="modal-overlay" id="menuImageModal">
+    <div class="modal-window" style="max-width:680px; text-align:center;">
+      <button class="modal-close-btn" onclick="closeModal('menuImageModal')">✕</button>
+      <div class="modal-header">
+        <h3>📄 主廚屋 · 實體紙本菜單</h3>
+        <p style="font-size:13px; color:var(--gray); margin-top:4px;">點擊圖片可放大檢視詳細項目</p>
+      </div>
+      <img src="menu.jpg" alt="主廚屋紙本菜單" style="width:100%; border-radius:14px; box-shadow:var(--shadow-sm); border:1px solid var(--border);">
+    </div>
+  </div>
+
+  <!-- Modal 2: 訂單完成確認與 LINE 複製彈窗 -->
+  <div class="modal-overlay" id="orderSuccessModal">
+    <div class="modal-window">
+      <button class="modal-close-btn" onclick="closeModal('orderSuccessModal')">✕</button>
+      <div class="modal-header">
+        <div class="icon">🎉</div>
+        <h3>訂單已成功送出！</h3>
+        <p style="font-size:13.5px; color:var(--gray); margin-top:4px;">感謝您的訂購，主廚屋將竭誠為您備餐</p>
+      </div>
+
+      <div class="receipt-order-id" id="modalOrderIdText">
+        ORD-20261028-120000-123
+      </div>
+
+      <div class="modal-receipt-card" id="modalReceiptDetails">
+        <!-- Injected by JS -->
+      </div>
+
+      <div class="btn-action-group">
+        <button class="btn-copy-line" onclick="copyLineFormat()">
+          <span>📋 複製 LINE 訂購訊息</span>
+        </button>
+        <button class="btn-modal-done" onclick="closeModal('orderSuccessModal')">
+          完成
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 3: 歷史訂單抽屜 -->
+  <div class="modal-overlay" id="historyModal">
+    <div class="modal-window">
+      <button class="modal-close-btn" onclick="closeModal('historyModal')">✕</button>
+      <div class="modal-header">
+        <div class="icon">📜</div>
+        <h3>本機歷史訂單紀錄</h3>
+        <p style="font-size:13px; color:var(--gray);">儲存於您目前使用的瀏覽器中</p>
+      </div>
+      <div id="historyListContainer" style="max-height:360px; overflow-y:auto; margin-top:14px;">
+        <!-- Injected by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 4: 團購/福委統計工具 -->
+  <div class="modal-overlay" id="groupToolModal">
+    <div class="modal-window">
+      <button class="modal-close-btn" onclick="closeModal('groupToolModal')">✕</button>
+      <div class="modal-header">
+        <div class="icon">👥</div>
+        <h3>團購 / 福委便當統計總表</h3>
+        <p style="font-size:13px; color:var(--gray);">自動彙整當前購物車內各餐點、米飯需求，方便向店家直接叫餐！</p>
+      </div>
+      <div class="modal-receipt-card" id="groupSummaryContent">
+        <!-- Injected by JS -->
+      </div>
+      <button class="btn-modal-done" style="width:100%; margin-top:14px;" onclick="copyGroupSummaryText()">
+        📋 一鍵複製店家叫餐統計文字
+      </button>
+    </div>
+  </div>
+
+  <!-- Load Embedded Base64 Food Photos -->
+  <script src="food_images.js"></script>
+
+  <!-- Interactive Core Application Logic -->
+  <script>
+    // 菜單完整資料
+    const MENU_ITEMS = [
+      {
+        id: 'M001',
+        name: '川味椒麻雞飯',
+        category: 'chicken',
+        price: 135,
+        tag: '👑 人氣冠軍',
+        desc: '酥脆金黃去骨雞腿排，佐特調微麻帶香川味椒麻醬汁。',
+        flavors: ['微辣', '中辣', '醬汁分開', '蔥多']
+      },
+      {
+        id: 'M002',
+        name: '炭燒雞腿排飯',
+        category: 'chicken',
+        price: 135,
+        tag: '🔥 招牌現烤',
+        desc: '特選鮮嫩厚切雞腿排，慢火炭燒醬香撲鼻，多汁入味。',
+        flavors: ['不要蔥', '醬多', '胡椒少']
+      },
+      {
+        id: 'M003',
+        name: '玫瑰油雞腿飯',
+        category: 'chicken',
+        price: 135,
+        tag: '✨ 港式名饌',
+        desc: '道地粵式玫瑰油雞配方浸煮，皮滑肉嫩、油脂清甜。',
+        flavors: ['蔥油多', '不要蔥', '胡椒多']
+      },
+      {
+        id: 'M004',
+        name: '東坡肉飯',
+        category: 'pork',
+        price: 135,
+        tag: '🥩 慢火滷製',
+        desc: '特選五花肉冰糖與純釀醬油慢燉數小時，肥而不膩、入口即化。',
+        flavors: ['肉偏瘦', '肉偏肥', '汁多淋飯']
+      },
+      {
+        id: 'M005',
+        name: '黯然銷魂飯',
+        category: 'pork',
+        price: 125,
+        tag: '🍳 經典老饕',
+        desc: '經典港式蜜汁叉燒佐黃金煎蛋，鹹甜交織令人回味無窮。',
+        flavors: ['半熟蛋', '全熟蛋', '多醬汁']
+      },
+      {
+        id: 'M006',
+        name: '香酥豬排飯',
+        category: 'pork',
+        price: 120,
+        tag: '酥脆爽口',
+        desc: '厚實里肌肉手工拍打醃漬，外皮金黃酥脆、大口滿足。',
+        flavors: ['胡椒多', '辣味', '不要蔥']
+      },
+      {
+        id: 'M007',
+        name: '漁夫鮮魚飯',
+        category: 'seafood',
+        price: 140,
+        priceText: '時價 $140',
+        tag: '🐟 當日現撈',
+        desc: '市場精選當令新鮮魚排，鮮嫩無腥味，富含健康好油脂。',
+        flavors: ['不要胡椒', '胡椒多', '不要蔥']
+      },
+      {
+        id: 'M008',
+        name: '農夫鮮蔬飯',
+        category: 'veggie',
+        price: 115,
+        tag: '🥬 清爽少油',
+        desc: '多款季節鮮採蔬菜、菇類與鮮蛋搭配，健康輕盈無負擔。',
+        flavors: ['蛋奶素', '清淡少油', '不要蔥蒜']
+      }
+    ];
+
+    // 全域購物車狀態: { 'M001': { qty: 2, riceType: '白飯', riceAmount: '正常飯', customOptions: ['微辣'] } }
+    let cart = {};
+    let currentCategory = 'all';
+    let searchQuery = '';
+    let lastGeneratedOrder = null;
+
+    // 初始化載入
+    document.addEventListener('DOMContentLoaded', () => {
+      loadCachedCustomerData();
+      renderMenu();
+      updateCartSummary();
+      initDefaultDeliveryTime();
+    });
+
+    // 預設送達時間為當前時間 + 40 分鐘
+    function initDefaultDeliveryTime() {
+      const now = new Date();
+      now.setMinutes(now.getMinutes() + 40);
+      const pad = (n) => String(n).padStart(2, '0');
+      const formatted = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}T${pad(now.getHours())}:${pad(now.getMinutes())}`;
+      const timeInput = document.getElementById('deliveryTime');
+      if (timeInput && !timeInput.value) {
+        timeInput.value = formatted;
+      }
+    }
+
+    // 載入 LocalStorage 歷史姓名與部門
+    function loadCachedCustomerData() {
+      const cached = localStorage.getItem('chef_customer_cache');
+      if (cached) {
+        try {
+          const data = JSON.parse(cached);
+          if (data.name) document.getElementById('customerName').value = data.name;
+          if (data.department) document.getElementById('department').value = data.department;
+          if (data.phone) document.getElementById('phone').value = data.phone;
+          if (data.address) document.getElementById('deliveryAddress').value = data.address;
+        } catch (e) {}
+      }
+    }
+
+    // 儲存常用聯絡資訊至 LocalStorage
+    function saveCustomerDataCache() {
+      const data = {
+        name: document.getElementById('customerName').value.trim(),
+        department: document.getElementById('department').value,
+        phone: document.getElementById('phone').value.trim(),
+        address: document.getElementById('deliveryAddress').value.trim()
+      };
+      localStorage.setItem('chef_customer_cache', JSON.stringify(data));
+    }
+
+    // 渲染菜單
+    function renderMenu() {
+      const grid = document.getElementById('bentoGrid');
+      grid.innerHTML = '';
+
+      const filtered = MENU_ITEMS.filter(item => {
+        const matchesCategory = currentCategory === 'all' || item.category === currentCategory;
+        const matchesSearch = !searchQuery ||
+          item.name.includes(searchQuery) ||
+          item.desc.includes(searchQuery) ||
+          item.tag.includes(searchQuery);
+        return matchesCategory && matchesSearch;
+      });
+
+      if (filtered.length === 0) {
+        grid.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:40px; color:#888;">找不到相符的便當，請嘗試搜尋其他關鍵字</div>';
+        return;
+      }
+
+      filtered.forEach(item => {
+        const cartItem = cart[item.id] || { qty: 0, riceType: '白飯', riceAmount: '正常飯', customOptions: [] };
+        const photoUrl = (typeof FOOD_IMAGES !== 'undefined' && FOOD_IMAGES[item.id]) ? FOOD_IMAGES[item.id] : 'menu.jpg';
+
+        const card = document.createElement('article');
+        card.className = 'bento-card' + (cartItem.qty > 0 ? ' has-selected' : '');
+        card.id = `card-${item.id}`;
+
+        const flavorsHtml = (item.flavors || []).map(f => {
+          const isSelected = cartItem.customOptions.includes(f);
+          return `<span class="flavor-tag ${isSelected ? 'active' : ''}" onclick="toggleFlavor('${item.id}', '${f}')">${f}</span>`;
+        }).join('');
+
+        card.innerHTML = `
+          <div>
+            <div class="bento-photo-wrapper">
+              <img src="${photoUrl}" alt="${item.name}" class="bento-photo" loading="lazy">
+              <span class="tag-badge">${item.tag}</span>
+              <span class="price-pill">${item.priceText || '$' + item.price}</span>
+            </div>
+
+            <div class="bento-body">
+              <div>
+                <div class="bento-head">
+                  <h3 class="bento-name">${item.name}</h3>
+                </div>
+                <p style="font-size:13px; color:var(--gray); margin-top:4px;">${item.desc}</p>
+              </div>
+
+              <!-- Options -->
+              <div class="bento-options">
+                <div class="option-group">
+                  <label>米飯種類</label>
+                  <select class="option-select" onchange="updateRiceType('${item.id}', this.value)">
+                    <option value="白飯" ${cartItem.riceType === '白飯' ? 'selected' : ''}>優質白飯 (+$0)</option>
+                    <option value="五穀飯" ${cartItem.riceType === '五穀飯' ? 'selected' : ''}>養生五穀飯 (+$15)</option>
+                  </select>
+                </div>
+                <div class="option-group">
+                  <label>飯量調整</label>
+                  <select class="option-select" onchange="updateRiceAmount('${item.id}', this.value)">
+                    <option value="正常飯" ${cartItem.riceAmount === '正常飯' ? 'selected' : ''}>正常飯量</option>
+                    <option value="少飯" ${cartItem.riceAmount === '少飯' ? 'selected' : ''}>少飯 (-20%)</option>
+                    <option value="半飯" ${cartItem.riceAmount === '半飯' ? 'selected' : ''}>半飯 (-50%)</option>
+                    <option value="不要飯" ${cartItem.riceAmount === '不要飯' ? 'selected' : ''}>不要飯 (換菜)</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Custom Flavors -->
+              <div>
+                <div style="font-size:11.5px; font-weight:800; color:var(--gray); margin-bottom:5px;">客製口味 (可複選)</div>
+                <div class="flavor-tags">
+                  ${flavorsHtml}
+                </div>
+              </div>
+
+              <!-- Stepper -->
+              <div class="bento-footer">
+                <div class="item-subtotal-text">
+                  小計：<strong id="card-subtotal-${item.id}">$${calculateItemSubtotal(item, cartItem)}</strong>
+                </div>
+
+                <div class="qty-stepper">
+                  <button class="btn-qty" onclick="changeQty('${item.id}', -1)">−</button>
+                  <span class="qty-number" id="qty-val-${item.id}">${cartItem.qty}</span>
+                  <button class="btn-qty plus" onclick="changeQty('${item.id}', 1)">＋</button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    // 計算單一品項小計
+    function calculateItemSubtotal(menuItem, cartItem) {
+      if (!cartItem || cartItem.qty <= 0) return 0;
+      const basePrice = menuItem.price > 0 ? menuItem.price : 140;
+      const riceExtra = cartItem.riceType === '五穀飯' ? 15 : 0;
+      return (basePrice + riceExtra) * cartItem.qty;
+    }
+
+    // 數量加減
+    function changeQty(itemId, delta) {
+      if (!cart[itemId]) {
+        cart[itemId] = { qty: 0, riceType: '白飯', riceAmount: '正常飯', customOptions: [] };
+      }
+      cart[itemId].qty += delta;
+      if (cart[itemId].qty <= 0) {
+        delete cart[itemId];
+      }
+      updateItemCardUi(itemId);
+      updateCartSummary();
+    }
+
+    // 更新米飯種類
+    function updateRiceType(itemId, value) {
+      if (!cart[itemId]) cart[itemId] = { qty: 1, riceType: '白飯', riceAmount: '正常飯', customOptions: [] };
+      cart[itemId].riceType = value;
+      updateItemCardUi(itemId);
+      updateCartSummary();
+    }
+
+    // 更新飯量
+    function updateRiceAmount(itemId, value) {
+      if (!cart[itemId]) cart[itemId] = { qty: 1, riceType: '白飯', riceAmount: '正常飯', customOptions: [] };
+      cart[itemId].riceAmount = value;
+      updateCartSummary();
+    }
+
+    // 點選/取消口味客製標籤
+    function toggleFlavor(itemId, flavorText) {
+      if (!cart[itemId]) cart[itemId] = { qty: 1, riceType: '白飯', riceAmount: '正常飯', customOptions: [] };
+      const index = cart[itemId].customOptions.indexOf(flavorText);
+      if (index > -1) {
+        cart[itemId].customOptions.splice(index, 1);
+      } else {
+        cart[itemId].customOptions.push(flavorText);
+      }
+      updateItemCardUi(itemId);
+      updateCartSummary();
+    }
+
+    // 更新卡片上的 UI 數字
+    function updateItemCardUi(itemId) {
+      const cartItem = cart[itemId] || { qty: 0, riceType: '白飯', riceAmount: '正常飯', customOptions: [] };
+      const menuItem = MENU_ITEMS.find(m => m.id === itemId);
+
+      const qtyEl = document.getElementById(`qty-val-${itemId}`);
+      if (qtyEl) qtyEl.textContent = cartItem.qty;
+
+      const subtotalEl = document.getElementById(`card-subtotal-${itemId}`);
+      if (subtotalEl && menuItem) subtotalEl.textContent = '$' + calculateItemSubtotal(menuItem, cartItem);
+
+      const card = document.getElementById(`card-${itemId}`);
+      if (card) {
+        card.classList.toggle('has-selected', cartItem.qty > 0);
+        // Refresh flavor tags active state
+        card.querySelectorAll('.flavor-tag').forEach(tagEl => {
+          tagEl.classList.toggle('active', cartItem.customOptions.includes(tagEl.textContent.trim()));
+        });
+      }
+    }
+
+    // 篩選分類
+    function filterCategory(cat, btnEl) {
+      currentCategory = cat;
+      document.querySelectorAll('.cat-pill').forEach(p => p.classList.remove('active'));
+      if (btnEl) btnEl.classList.add('active');
+      renderMenu();
+    }
+
+    // 搜尋功能
+    function handleSearch() {
+      searchQuery = document.getElementById('searchInput').value.trim();
+      renderMenu();
+    }
+
+    // 外送／自取切換
+    function handleDeliveryChange() {
+      const method = document.getElementById('deliveryMethod').value;
+      const addrBox = document.getElementById('deliveryAddressBox');
+      if (method === '外送') {
+        addrBox.classList.add('show');
+      } else {
+        addrBox.classList.remove('show');
+      }
+    }
+
+    // 清空購物車
+    function clearCart() {
+      if (Object.keys(cart).length === 0) return;
+      if (confirm('確定要清空目前購物車的所有便當品項嗎？')) {
+        cart = {};
+        renderMenu();
+        updateCartSummary();
+      }
+    }
+
+    // 滾動至結帳區 (Mobile)
+    function scrollToCheckout() {
+      document.getElementById('checkoutSection').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // 更新右側購物車清單與總金額試算
+    function updateCartSummary() {
+      const listContainer = document.getElementById('cartItemsList');
+      const cartKeys = Object.keys(cart);
+
+      let totalQty = 0;
+      let mealSubtotal = 0;
+      let multigrainTotal = 0;
+
+      if (cartKeys.length === 0) {
+        listContainer.innerHTML = '<div class="cart-empty-state">購物車內尚未加入便當<br>請從左側點選數量「＋」開始點餐</div>';
+      } else {
+        listContainer.innerHTML = '';
+        cartKeys.forEach(id => {
+          const cartItem = cart[id];
+          const menuItem = MENU_ITEMS.find(m => m.id === id);
+          if (!menuItem || cartItem.qty <= 0) return;
+
+          totalQty += cartItem.qty;
+          const basePrice = menuItem.price > 0 ? menuItem.price : 140;
+          const riceExtra = cartItem.riceType === '五穀飯' ? 15 : 0;
+          const rowSubtotal = (basePrice + riceExtra) * cartItem.qty;
+
+          mealSubtotal += basePrice * cartItem.qty;
+          multigrainTotal += riceExtra * cartItem.qty;
+
+          const flavorsText = cartItem.customOptions.length ? ` · ${cartItem.customOptions.join(', ')}` : '';
+
+          const itemRow = document.createElement('div');
+          itemRow.className = 'cart-item-row';
+          itemRow.innerHTML = `
+            <div>
+              <div class="cart-item-name">${menuItem.name} × ${cartItem.qty}</div>
+              <div class="cart-item-meta">${cartItem.riceType} (${cartItem.riceAmount})${flavorsText}</div>
+            </div>
+            <div class="cart-item-price">$${rowSubtotal}</div>
+          `;
+          listContainer.appendChild(itemRow);
+        });
+      }
+
+      const grandTotal = mealSubtotal + multigrainTotal;
+
+      document.getElementById('cartCountBadge').textContent = `${totalQty} 份`;
+      document.getElementById('summaryTotalQty').textContent = `${totalQty} 份`;
+      document.getElementById('summaryMealSubtotal').textContent = `$${mealSubtotal}`;
+      document.getElementById('summaryRiceExtra').textContent = `$${multigrainTotal}`;
+      document.getElementById('summaryGrandTotal').textContent = `$${grandTotal}`;
+
+      // Mobile float bar
+      document.getElementById('mobileQtyText').textContent = totalQty;
+      document.getElementById('mobileTotalText').textContent = `$${grandTotal}`;
+
+      const submitBtn = document.getElementById('btnSubmitOrder');
+      submitBtn.disabled = totalQty === 0;
+    }
+
+    // 提交訂單
+    function submitOrder() {
+      const customerName = document.getElementById('customerName').value.trim();
+      const department = document.getElementById('department').value;
+      const phone = document.getElementById('phone').value.trim();
+      const deliveryMethod = document.getElementById('deliveryMethod').value;
+      const deliveryAddress = document.getElementById('deliveryAddress').value.trim();
+      const tableware = document.getElementById('tableware').value;
+      const taxId = document.getElementById('taxId').value.trim();
+      const deliveryTime = document.getElementById('deliveryTime').value;
+      const note = document.getElementById('orderNote').value.trim();
+
+      // 欄位防呆檢驗
+      if (!customerName) {
+        alert('請填寫訂購人姓名！');
+        document.getElementById('customerName').focus();
+        return;
+      }
+      if (!department) {
+        alert('請選擇所屬部門！');
+        document.getElementById('department').focus();
+        return;
+      }
+      if (deliveryMethod === '外送' && !deliveryAddress) {
+        alert('選擇「專人外送」時，外送地址為必填項目！');
+        document.getElementById('deliveryAddress').focus();
+        return;
+      }
+      if (taxId && !/^\d{8}$/.test(taxId)) {
+        alert('公司統一編號格式錯誤，請輸入 8 碼數字！');
+        document.getElementById('taxId').focus();
+        return;
+      }
+
+      const items = [];
+      Object.keys(cart).forEach(id => {
+        const cartItem = cart[id];
+        const menuItem = MENU_ITEMS.find(m => m.id === id);
+        if (cartItem && cartItem.qty > 0) {
+          items.push({
+            id: menuItem.id,
+            name: menuItem.name,
+            qty: cartItem.qty,
+            price: menuItem.price > 0 ? menuItem.price : 140,
+            riceType: cartItem.riceType,
+            riceAmount: cartItem.riceAmount,
+            customOptions: cartItem.customOptions
+          });
+        }
+      });
+
+      if (items.length === 0) {
+        alert('購物車為空，請至少選擇 1 份便當餐點！');
+        return;
+      }
+
+      saveCustomerDataCache();
+
+      // 產生唯一訂單編號
+      const now = new Date();
+      const pad = (n) => String(n).padStart(2, '0');
+      const orderDateStr = `${now.getFullYear()}${pad(now.getMonth()+1)}${pad(now.getDate())}-${pad(now.getHours())}${pad(now.getMinutes())}${pad(now.getSeconds())}`;
+      const randomSuffix = Math.floor(Math.random() * 900 + 100);
+      const orderId = `ORD-${orderDateStr}-${randomSuffix}`;
+      const orderTimeStr = `${now.getFullYear()}/${pad(now.getMonth()+1)}/${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}`;
+
+      let mealSub = 0;
+      let riceExtra = 0;
+      items.forEach(it => {
+        mealSub += it.price * it.qty;
+        if (it.riceType === '五穀飯') riceExtra += 15 * it.qty;
+      });
+      const grandTotal = mealSub + riceExtra;
+
+      const orderPayload = {
+        orderId: orderId,
+        orderTime: orderTimeStr,
+        customerName: customerName,
+        department: department,
+        phone: phone,
+        deliveryMethod: deliveryMethod,
+        deliveryAddress: deliveryAddress,
+        tableware: tableware,
+        taxId: taxId,
+        deliveryTime: deliveryTime,
+        note: note,
+        items: items,
+        mealSubtotal: mealSub,
+        multigrainTotal: riceExtra,
+        total: grandTotal
+      };
+
+      lastGeneratedOrder = orderPayload;
+
+      // 儲存至本機歷史紀錄
+      saveOrderToHistory(orderPayload);
+
+      // 若有設定 GAS Web App URL 則異步轉發
+      const gasUrl = localStorage.getItem('chef_gas_webapp_url');
+      if (gasUrl) {
+        fetch(gasUrl, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(orderPayload)
+        }).catch(err => console.log('GAS sync warning:', err));
+      }
+
+      // 彈出成功收據 Modal
+      showOrderSuccessModal(orderPayload);
+
+      // 清空目前購物車
+      cart = {};
+      renderMenu();
+      updateCartSummary();
+    }
+
+    // 彈出成功訂單收據
+    function showOrderSuccessModal(order) {
+      document.getElementById('modalOrderIdText').textContent = order.orderId;
+
+      const detailsEl = document.getElementById('modalReceiptDetails');
+      const itemsListHtml = order.items.map(it => {
+        const extraText = it.riceType === '五穀飯' ? ' (+五穀$15)' : '';
+        const flavorStr = it.customOptions && it.customOptions.length ? ` · ${it.customOptions.join(',')}` : '';
+        return `
+          <div class="receipt-row">
+            <span>${it.name} × ${it.qty} (${it.riceType}/${it.riceAmount}${flavorStr})</span>
+            <strong>$${(it.price + (it.riceType === '五穀飯' ? 15 : 0)) * it.qty}</strong>
+          </div>
+        `;
+      }).join('');
+
+      detailsEl.innerHTML = `
+        <div class="receipt-row"><span>訂購人</span><strong>${order.customerName} (${order.department})</strong></div>
+        <div class="receipt-row"><span>聯絡電話</span><strong>${order.phone || '無'}</strong></div>
+        <div class="receipt-row"><span>取餐方式</span><strong>${order.deliveryMethod} ${order.deliveryAddress ? ' - ' + order.deliveryAddress : ''}</strong></div>
+        <div class="receipt-row"><span>期望時間</span><strong>${order.deliveryTime ? order.deliveryTime.replace('T', ' ') : '依現場安排'}</strong></div>
+        <div style="margin:8px 0; border-top:1px dashed var(--border); padding-top:6px;">
+          ${itemsListHtml}
+        </div>
+        <div class="receipt-row" style="font-size:16px; color:var(--primary); font-weight:900;">
+          <span>應付總額</span>
+          <span>$${order.total}</span>
+        </div>
+      `;
+
+      document.getElementById('orderSuccessModal').classList.add('show');
+    }
+
+    // 一鍵複製 LINE 格式文字
+    function copyLineFormat() {
+      if (!lastGeneratedOrder) return;
+      const ord = lastGeneratedOrder;
+      const itemsText = ord.items.map(it => {
+        const custom = it.customOptions && it.customOptions.length ? `【${it.customOptions.join(', ')}】` : '';
+        return `▫️ ${it.name} × ${it.qty}份 (${it.riceType} / ${it.riceAmount}) ${custom}`;
+      }).join('\n');
+
+      const text = `🍱【主廚屋 · 訂單通知】\n` +
+        `━━━━━━━━━━━━━━\n` +
+        `訂單編號：${ord.orderId}\n` +
+        `訂購同仁：${ord.customerName} (${ord.department})\n` +
+        `聯絡電話：${ord.phone || '無'}\n` +
+        `取餐方式：${ord.deliveryMethod} ${ord.deliveryAddress || ''}\n` +
+        `期望時間：${ord.deliveryTime ? ord.deliveryTime.replace('T', ' ') : '盡速送達'}\n` +
+        `餐具需求：${ord.tableware}\n` +
+        `━━━━━━━━━━━━━━\n` +
+        `餐點內容：\n${itemsText}\n` +
+        `━━━━━━━━━━━━━━\n` +
+        `五穀飯加價：$${ord.multigrainTotal}\n` +
+        `總計金額：$${ord.total} 元\n` +
+        (ord.note ? `備註說明：${ord.note}\n` : '') +
+        `送出時間：${ord.orderTime}`;
+
+      navigator.clipboard.writeText(text).then(() => {
+        alert('✅ 已成功複製 LINE 格式訂單！可直接貼至 LINE 群組或公司通訊軟體！');
+      }).catch(() => {
+        alert('請手動選取複製：\n\n' + text);
+      });
+    }
+
+    // 本機歷史訂單儲存與讀取
+    function saveOrderToHistory(order) {
+      let history = [];
+      try {
+        history = JSON.parse(localStorage.getItem('chef_order_history') || '[]');
+      } catch (e) {}
+      history.unshift(order);
+      if (history.length > 20) history = history.slice(0, 20); // 保留最新 20 筆
+      localStorage.setItem('chef_order_history', JSON.stringify(history));
+    }
+
+    function openHistoryModal() {
+      let history = [];
+      try {
+        history = JSON.parse(localStorage.getItem('chef_order_history') || '[]');
+      } catch (e) {}
+
+      const container = document.getElementById('historyListContainer');
+      if (history.length === 0) {
+        container.innerHTML = '<div style="text-align:center; padding:30px; color:#888;">尚無歷史訂單紀錄</div>';
+      } else {
+        container.innerHTML = history.map((ord, idx) => `
+          <div style="background:#fdfaf6; border:1px solid var(--border); border-radius:12px; padding:14px; margin-bottom:10px;">
+            <div style="display:flex; justify-content:space-between; font-weight:800; font-size:13.5px; color:var(--primary);">
+              <span>${ord.orderId}</span>
+              <span>$${ord.total}</span>
+            </div>
+            <div style="font-size:12px; color:var(--gray); margin-top:3px;">
+              ${ord.orderTime} ｜ ${ord.customerName} (${ord.department})
+            </div>
+            <div style="font-size:12.5px; margin-top:6px; color:#333;">
+              ${ord.items.map(it => `${it.name} × ${it.qty}`).join('、')}
+            </div>
+          </div>
+        `).join('');
+      }
+      document.getElementById('historyModal').classList.add('show');
+    }
+
+    // 團購福委彙總統計工具
+    function openGroupToolModal() {
+      const cartKeys = Object.keys(cart);
+      const container = document.getElementById('groupSummaryContent');
+
+      if (cartKeys.length === 0) {
+        container.innerHTML = '<div style="text-align:center; padding:20px; color:#888;">目前購物車為空，請先點選便當品項加入購物車後再使用此統計工具！</div>';
+      } else {
+        const itemStats = {};
+        let totalRiceWhite = 0;
+        let totalRiceMulti = 0;
+        let totalBento = 0;
+        let grandTotal = 0;
+
+        cartKeys.forEach(id => {
+          const item = cart[id];
+          const menuItem = MENU_ITEMS.find(m => m.id === id);
+          if (item && item.qty > 0 && menuItem) {
+            itemStats[menuItem.name] = (itemStats[menuItem.name] || 0) + item.qty;
+            totalBento += item.qty;
+            if (item.riceType === '五穀飯') totalRiceMulti += item.qty;
+            else totalRiceWhite += item.qty;
+            grandTotal += (menuItem.price + (item.riceType === '五穀飯' ? 15 : 0)) * item.qty;
+          }
+        });
+
+        const listRows = Object.keys(itemStats).map(name => `
+          <div class="receipt-row">
+            <span>🍛 ${name}</span>
+            <strong>${itemStats[name]} 份</strong>
+          </div>
+        `).join('');
+
+        container.innerHTML = `
+          <div style="font-weight:900; margin-bottom:8px; color:var(--primary);">📋 本次團購叫餐清單統計：</div>
+          ${listRows}
+          <div style="margin-top:10px; padding-top:8px; border-top:1px dashed var(--border);">
+            <div class="receipt-row"><span>便當總數量</span><strong>${totalBento} 份</strong></div>
+            <div class="receipt-row"><span>米飯需求</span><strong>白飯 ${totalRiceWhite} 份 ｜ 五穀飯 ${totalRiceMulti} 份</strong></div>
+            <div class="receipt-row" style="color:var(--primary); font-size:16px;"><span>總計金額</span><strong>$${grandTotal} 元</strong></div>
+          </div>
+        `;
+      }
+      document.getElementById('groupToolModal').classList.add('show');
+    }
+
+    function copyGroupSummaryText() {
+      const container = document.getElementById('groupSummaryContent');
+      const text = `🍱【主廚屋 · 團購叫餐統計表】\n` + container.innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        alert('✅ 已成功複製團購統計報表！');
+      }).catch(() => {
+        alert('請手動選取複製');
+      });
+    }
+
+    function openMenuImageModal() {
+      document.getElementById('menuImageModal').classList.add('show');
+    }
+
+    function closeModal(modalId) {
+      document.getElementById(modalId).classList.remove('show');
+    }
+  </script>
+</body>
+</html>
