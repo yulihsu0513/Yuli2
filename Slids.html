@@ -97,6 +97,49 @@
       margin-bottom: 12px;
     }
 
+    .btn-download-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      background: var(--primary);
+      color: #ffffff !important;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      text-decoration: none;
+      box-shadow: 0 4px 12px rgba(20, 83, 45, 0.2);
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    .btn-download-tag:hover {
+      background: var(--primary-light);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(20, 83, 45, 0.3);
+    }
+
+    .btn-download-footer {
+      background: #166534;
+      border: 1px solid #4ade80;
+      color: #ffffff;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-download-footer:hover {
+      background: #15803d;
+      color: #ffffff;
+      transform: translateY(-1px);
+    }
+
     .slide-title {
       font-size: clamp(24px, 3.2vw, 36px);
       font-weight: 800;
@@ -442,8 +485,11 @@
 
     <!-- SLIDE 1: Cover -->
     <section class="slide cover-slide active" data-index="1">
-      <div class="slide-header">
-        <span class="slide-tag">勞動部勞動力發展署・政策培訓補助</span>
+      <div class="slide-header" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+        <span class="slide-tag" style="margin-bottom:0;">勞動部勞動力發展署・政策培訓補助</span>
+        <a href="企業人力資源提升計畫_懶人包.pdf" download="企業人力資源提升計畫_懶人包.pdf" class="btn-download-tag" title="下載官方懶人包 PDF 檔案">
+          📥 下載完整 PDF (懶人包)
+        </a>
       </div>
       <div class="slide-content">
         <div class="cover-hero">
@@ -769,6 +815,10 @@
       <button class="btn-nav" id="btnNext" aria-label="下一頁">
         下一頁 <span>→</span>
       </button>
+
+      <a href="企業人力資源提升計畫_懶人包.pdf" download="企業人力資源提升計畫_懶人包.pdf" class="btn-download-footer" title="下載官方懶人包 PDF 檔案">
+        📥 下載 PDF
+      </a>
 
       <button class="btn-nav" id="btnFullscreen" title="切換全螢幕">
         ⛶ 全螢幕
